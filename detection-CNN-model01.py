@@ -63,6 +63,47 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.savefig('./confusion.png',dpi=300)
+    
+def cantidad_dimen(WithMask_dir, WithoutMask_dir, WithMask_names, WithoutMask_names):
+    img_p = []
+    for i in range(len(WithMask_names)):
+        next_pix = os.path.join(WithMask_dir, WithMask_names[i])
+        img = mpimg.imread(next_pix)
+        img_p.append(img)
+        
+    for i in range(len(WithoutMask_names)):
+        next_pix = os.path.join(WithoutMask_dir, WithoutMask_names[i])
+        img = mpimg.imread(next_pix)
+        img_p.append(img)
+    
+    menor_1 = (40, 40, 3)
+    menor_2 = (100, 100, 3)
+    menor_3 = (200, 200, 3)
+    x = 0
+    y = 0
+    z = 0
+    w = 0
+
+    for i in range(len(img_p)):
+        dim_img_p = np.shape(img_p[i])
+        if (dim_img_p <= menor_1):
+            x = x + 1
+        elif ((dim_img_p > menor_1) & (dim_img_p <= menor_2)):
+            y = y + 1
+        elif ((dim_img_p > menor_2) & (dim_img_p <= menor_3)):
+            z = z + 1
+        else:
+            w = w + 1
+    names = ["- a 40", "40 a 100", "100 a 200", "200 a -"]
+    numbers = [x, y, z, w]
+    plt.figure(figsize = (10, 8))
+    i = 1.0
+    j = 0
+    for i in range(len(names)):
+        plt.annotate(numbers[i], (-0.1 + i, numbers[i] + j))
+    plt.grid()
+    plt.title("Dimensiones de la imagen n x n")
+    plt.bar(names, numbers)
 
 #%% Callbacks
 
